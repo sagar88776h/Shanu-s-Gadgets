@@ -99,12 +99,29 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
         <div className="overflow-y-auto p-6 sm:p-10 space-y-8">
           {/* Main Visual & Buying Box Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Left: Product Large Visual */}
-            <div className="lg:col-span-6 rounded-2xl bg-gradient-to-b from-black/[0.02] to-black/[0.06] dark:bg-black/50 border border-black/[0.06] dark:border-white/[0.06] p-6 sm:p-10 flex flex-col items-center justify-center relative aspect-square shadow-inner">
+            {/* Left: Product Large Visual with 3D Depth Movement */}
+            <div
+              className="lg:col-span-6 rounded-2xl bg-gradient-to-b from-black/[0.02] to-black/[0.06] dark:bg-black/50 border border-black/[0.06] dark:border-white/[0.06] p-6 sm:p-10 flex flex-col items-center justify-center relative aspect-square shadow-inner overflow-hidden group cursor-grab active:cursor-grabbing"
+              onMouseMove={(e) => {
+                const rect = e.currentTarget.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
+                const y = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
+                const img = e.currentTarget.querySelector("img");
+                if (img) {
+                  img.style.transform = `perspective(800px) rotateY(${x * 16}deg) rotateX(${-y * 16}deg) scale(1.05)`;
+                }
+              }}
+              onMouseLeave={(e) => {
+                const img = e.currentTarget.querySelector("img");
+                if (img) {
+                  img.style.transform = `perspective(800px) rotateY(0deg) rotateX(0deg) scale(1)`;
+                }
+              }}
+            >
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-full object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] max-h-[380px]"
+                className="w-full h-full object-contain filter drop-shadow-[0_20px_40px_rgba(0,0,0,0.15)] dark:drop-shadow-[0_20px_40px_rgba(0,0,0,0.8)] max-h-[380px] transition-transform duration-200 ease-out animate-float pointer-events-none"
               />
 
               {product.badge && (
@@ -112,6 +129,10 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   {product.badge}
                 </span>
               )}
+
+              <span className="absolute bottom-3 text-[10px] font-mono text-apple-gray opacity-70">
+                Move cursor to inspect 3D perspective
+              </span>
             </div>
 
             {/* Right: Product Details & Buying Actions */}

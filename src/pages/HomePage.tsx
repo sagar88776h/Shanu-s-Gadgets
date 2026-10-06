@@ -3,6 +3,7 @@ import type { Product } from "../data/storeData";
 import type { PageRoute } from "../components/Navbar";
 import { STORE_CONFIG, CATEGORIES, HERO_PRODUCTS } from "../data/storeData";
 import { HeroSection } from "../components/HeroSection";
+import { ProductCard3D } from "../components/ProductCard3D";
 import { WhyShanusGadgets } from "../components/WhyShanusGadgets";
 import { CustomerReviews } from "../components/CustomerReviews";
 import { SocialGallery } from "../components/SocialGallery";
@@ -66,86 +67,16 @@ export const HomePage: React.FC<HomePageProps> = ({
             </button>
           </div>
 
-          {/* Grid of Top 4 Hero Products */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Grid of Top 4 Hero Products with 3D Card Physics */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {HERO_PRODUCTS.map((prod) => (
-              <div
+              <ProductCard3D
                 key={prod.id}
-                className="rounded-3xl apple-card dark:glass-card border border-black/[0.06] dark:border-white/10 p-5 flex flex-col justify-between hover:shadow-xl transition-all duration-300 group"
-              >
-                <div>
-                  {/* Badge */}
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/[0.04] dark:bg-white/10 text-apple-text dark:text-white">
-                      {prod.categoryLabel}
-                    </span>
-                    {prod.badge && (
-                      <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold font-bold">
-                        {prod.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Image */}
-                  <div
-                    onClick={() => {
-                      soundFx.playClick();
-                      onSelectProduct(prod);
-                    }}
-                    className="aspect-square rounded-2xl overflow-hidden bg-black/5 dark:bg-black/40 mb-4 cursor-pointer relative group-hover:scale-[1.02] transition-transform duration-500"
-                  >
-                    <img
-                      src={prod.image}
-                      alt={prod.name}
-                      className="w-full h-full object-cover object-center"
-                    />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors flex items-center justify-center">
-                      <span className="opacity-0 group-hover:opacity-100 transition-opacity px-3 py-1.5 rounded-full bg-white/90 dark:bg-black/90 text-apple-text dark:text-white text-xs font-semibold shadow-md">
-                        Quick View
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title & Tagline */}
-                  <h3
-                    onClick={() => {
-                      soundFx.playClick();
-                      onSelectProduct(prod);
-                    }}
-                    className="text-lg font-bold text-apple-text dark:text-white tracking-tight cursor-pointer hover:text-[#0071e3] transition-colors"
-                  >
-                    {prod.name}
-                  </h3>
-                  <p className="text-xs text-apple-gray mt-1 line-clamp-2">
-                    {prod.tagline}
-                  </p>
-                </div>
-
-                {/* Price & Action */}
-                <div className="pt-5 mt-4 border-t border-black/[0.06] dark:border-white/[0.06] flex items-center justify-between">
-                  <div>
-                    <span className="text-base font-extrabold text-apple-text dark:text-white">
-                      ₹{prod.price.toLocaleString("en-IN")}
-                    </span>
-                    {prod.originalPrice && (
-                      <span className="text-xs text-apple-gray line-through ml-1.5 font-normal">
-                        ₹{prod.originalPrice.toLocaleString("en-IN")}
-                      </span>
-                    )}
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      soundFx.playClick();
-                      onAddToCart(prod);
-                    }}
-                    className="w-8 h-8 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white flex items-center justify-center shadow-xs hover:scale-110 active:scale-95 transition-all"
-                    title="Add to Bag"
-                  >
-                    <ShoppingBag className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+                product={prod}
+                onSelectProduct={onSelectProduct}
+                onAddToCart={onAddToCart}
+                onOpen3D={() => onNavigatePage("studio")}
+              />
             ))}
           </div>
         </div>
