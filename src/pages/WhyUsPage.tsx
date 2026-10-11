@@ -9,7 +9,6 @@ import {
   MapPin,
   CheckCircle2,
   XCircle,
-  Phone,
   MessageCircle,
 } from "lucide-react";
 

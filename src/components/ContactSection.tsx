@@ -20,29 +20,36 @@ export const ContactSection: React.FC = () => {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [whatsappUrl, setWhatsappUrl] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    soundFx.playChime();
-    setSubmitted(true);
-
-    try {
-      confetti({
-        particleCount: 60,
-        spread: 70,
-        origin: { y: 0.7 },
-        colors: ["#0071e3", "#f5a623", "#ffffff"],
-      });
-    } catch {
-      // Confetti fallback
-    }
 
     const msg = `Hello Shanu's Gadgets,\n\nName: ${form.name}\nPhone: ${form.phone}\nService Interested: ${form.service}\nMessage: ${form.message}`;
     const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+    setWhatsappUrl(url);
 
-    setTimeout(() => {
-      window.open(url, "_blank");
-    }, 800);
+    // Open immediately within the click handler (not after a delay) so
+    // browsers still treat it as a direct user gesture and don't silently
+    // block the popup - a blocked WhatsApp tab would otherwise leave the
+    // user staring at a false "success" state.
+    const opened = window.open(url, "_blank");
+
+    soundFx.playChime();
+    setSubmitted(true);
+
+    if (opened) {
+      try {
+        confetti({
+          particleCount: 60,
+          spread: 70,
+          origin: { y: 0.7 },
+          colors: ["#0071e3", "#f5a623", "#ffffff"],
+        });
+      } catch {
+        // Confetti fallback
+      }
+    }
   };
 
   return (
@@ -155,6 +162,17 @@ export const ContactSection: React.FC = () => {
                   <h4 className="text-xl font-bold text-apple-text dark:text-white">Connecting via WhatsApp</h4>
                   <p className="text-xs text-apple-gray">
                     Thank you, {form.name}! Your message has been prepared. Our store specialist will respond immediately.
+                  </p>
+                  <p className="text-[11px] text-apple-gray">
+                    Didn't see a WhatsApp tab open?{" "}
+                    <a
+                      href={whatsappUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#0071e3] dark:text-brand-gold font-semibold underline"
+                    >
+                      Open it manually
+                    </a>
                   </p>
                   <button
                     onClick={() => setSubmitted(false)}

@@ -17,7 +17,6 @@ interface ReviewsPageProps {
 
 export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   onNavigateHome,
-  onNavigateStore,
 }) => {
   const [filterRating, setFilterRating] = useState<number | "all">("all");
 
@@ -107,7 +106,35 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
           </div>
         </div>
 
+        {/* Rating Filter Pills */}
+        <div className="flex items-center gap-2 mb-8 overflow-x-auto no-scrollbar">
+          {(["all", 5, 4, 3] as const).map((r) => {
+            const isActive = filterRating === r;
+            return (
+              <button
+                key={r}
+                onClick={() => {
+                  soundFx.playClick();
+                  setFilterRating(r);
+                }}
+                className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+                  isActive
+                    ? "bg-[#0071e3] text-white shadow-sm"
+                    : "bg-black/[0.03] dark:bg-white/[0.06] text-apple-text/70 dark:text-apple-gray hover:text-apple-text dark:hover:text-white"
+                }`}
+              >
+                {r === "all" ? "All Reviews" : `${r} Stars`}
+              </button>
+            );
+          })}
+        </div>
+
         {/* Reviews List */}
+        {filteredReviews.length === 0 ? (
+          <div className="text-center py-20 rounded-3xl apple-card dark:glass-card border border-black/[0.06] dark:border-white/10 mb-16">
+            <p className="text-sm text-apple-gray">No reviews match this rating yet.</p>
+          </div>
+        ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-16">
           {filteredReviews.map((rev) => (
             <div
@@ -153,6 +180,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
             </div>
           ))}
         </div>
+        )}
       </div>
     </div>
   );

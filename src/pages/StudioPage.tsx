@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import type { Product } from "../data/storeData";
 import { HERO_PRODUCTS } from "../data/storeData";
 import { Interactive3DViewer } from "../components/Interactive3DViewer";
 import { soundFx } from "../lib/utils";
-import { ArrowLeft, Box, Sparkles } from "lucide-react";
+import { ArrowLeft, Box } from "lucide-react";
 
 interface StudioPageProps {
   initialProduct?: Product;
@@ -18,9 +18,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   onSelectProduct,
   onNavigateHome,
 }) => {
-  const [currentProduct, setCurrentProduct] = useState<Product>(
-    initialProduct || HERO_PRODUCTS[0]
-  );
+  const currentProduct = initialProduct || HERO_PRODUCTS[0];
 
   return (
     <div className="pt-28 pb-24 bg-white dark:bg-[#030304] text-apple-text dark:text-white transition-colors duration-300 animate-fade-in">

@@ -32,8 +32,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onClose,
   onAddToCart,
 }) => {
-  if (!product) return null;
-
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const [activeDetailTab, setActiveDetailTab] = useState<"features" | "specs" | "box">("features");
   const [addedAnimation, setAddedAnimation] = useState(false);
@@ -53,10 +51,24 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const velocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const lastPosRef = useRef<{ x: number; y: number; time: number }>({ x: 0, y: 0, time: 0 });
 
-  const colors = product.colors || [
+  const colors = product?.colors || [
     { name: "Space Black", hex: "#1f2022" },
     { name: "Titanium Silver", hex: "#a8a8a4" },
   ];
+
+  // Lock background scroll and support Escape-to-close while the modal is open
+  useEffect(() => {
+    if (!product) return;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [product, onClose]);
 
   // Floating breathing physics on mobile & desktop
   useEffect(() => {
@@ -181,6 +193,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleAdd = () => {
+    if (!product) return;
     soundFx.playChime();
     setAddedAnimation(true);
     onAddToCart(product);
@@ -198,6 +211,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
     setTimeout(() => setAddedAnimation(false), 2000);
   };
+
+  if (!product) return null;
 
   return (
     <div className="fixed inset-0 z-[110] bg-black/60 dark:bg-black/80 backdrop-blur-xl flex items-center justify-center p-2 sm:p-6 overflow-y-auto animate-fade-in select-none">

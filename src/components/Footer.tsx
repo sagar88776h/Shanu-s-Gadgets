@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { STORE_CONFIG } from "../data/storeData";
 import { soundFx } from "../lib/utils";
 import type { PageRoute } from "./Navbar";
@@ -16,6 +16,8 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro }) => {
+  const currentYear = useMemo(() => new Date().getFullYear(), []);
+
   const scrollToTop = () => {
     soundFx.playClick();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -196,7 +198,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro })
         {/* Bottom Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-apple-gray">
           <div className="flex items-center gap-1">
-            <span>© {new Date().getFullYear()} {STORE_CONFIG.name}. All rights reserved.</span>
+            <span>© {currentYear} {STORE_CONFIG.name}. All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-6">

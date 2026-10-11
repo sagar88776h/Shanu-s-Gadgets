@@ -21,8 +21,26 @@ import { WhyUsPage } from "./pages/WhyUsPage";
 import { ReviewsPage } from "./pages/ReviewsPage";
 import { ContactPage } from "./pages/ContactPage";
 
+const INTRO_SESSION_KEY = "sg_intro_seen";
+
+const hasSeenIntroThisSession = () => {
+  try {
+    return sessionStorage.getItem(INTRO_SESSION_KEY) === "1";
+  } catch {
+    return false;
+  }
+};
+
+const markIntroSeen = () => {
+  try {
+    sessionStorage.setItem(INTRO_SESSION_KEY, "1");
+  } catch {
+    // sessionStorage unavailable (private mode, etc) - safe to ignore
+  }
+};
+
 export const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(true);
+  const [showIntro, setShowIntro] = useState(() => !hasSeenIntroThisSession());
   const [isDark, setIsDark] = useState(false); // Default to Apple White Theme
   const [currentPage, setCurrentPage] = useState<PageRoute>("home");
   const [productCategoryFilter, setProductCategoryFilter] = useState<string | undefined>(undefined);
@@ -154,7 +172,12 @@ export const App: React.FC = () => {
 
       {/* Cinematic Store Intro Experience */}
       {showIntro && (
-        <CinematicIntro onComplete={() => setShowIntro(false)} />
+        <CinematicIntro
+          onComplete={() => {
+            markIntroSeen();
+            setShowIntro(false);
+          }}
+        />
       )}
 
       {/* Main Navbar with Multi-Page Navigation and Theme Toggle */}
