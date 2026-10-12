@@ -80,7 +80,7 @@ export const FeaturedProductShowcase: React.FC<FeaturedProductShowcaseProps> = (
                   <button
                     key={prod.id}
                     onClick={() => handleTabChange(idx)}
-                    className={`relative px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ${
+                    className={`relative isolate px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide transition-all duration-300 ${
                       isActive
                         ? "text-white dark:text-dark-950 shadow-md scale-100"
                         : "text-apple-text/70 dark:text-apple-gray hover:text-apple-text dark:hover:text-white"

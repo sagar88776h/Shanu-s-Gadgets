@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { STORE_CONFIG } from "../data/storeData";
+import type { CategoryId } from "../data/storeData";
+import { STORE_CONFIG, CATEGORIES, priceRange, inr } from "../data/storeData";
 import { soundFx } from "../lib/utils";
 import {
   ArrowDown,
   MapPin,
-  Box,
+  MessageCircle,
   Compass,
   ChevronRight,
   ShieldCheck,
@@ -15,14 +16,14 @@ import {
 interface HeroSectionProps {
   onExploreClick: () => void;
   onVisitStoreClick: () => void;
-  on3DClick: () => void;
+  onCategoryClick: (category: CategoryId) => void;
   onReplayIntro: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
   onExploreClick,
   onVisitStoreClick,
-  on3DClick,
+  onCategoryClick,
   onReplayIntro,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,7 +33,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const bannerSlides = [
     {
       id: "exterior",
-      tag: "Flagship Storefront",
+      tag: "Our store",
       title: "Shanu’s Gadgets — Mobile Phones & Accessories",
       subtitle: "Madhupur, Kamalasagar, Sepahijala, Tripura • Ph: +91 70058 38381",
       image: STORE_CONFIG.images.banner,
@@ -42,7 +43,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       id: "interior",
       tag: "Showroom & Counter",
       title: "Luxury Interior, Geometric Lighting & Displays",
-      subtitle: "Hands-on Smartphones, Audio Bays & 45-Min Express Repairs",
+      subtitle: "Try phones, earbuds and accessories in person",
       image: STORE_CONFIG.images.interiorReal,
       badge: "Real Showroom",
     },
@@ -87,34 +88,42 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </span>
         </div>
 
-        {/* Floating Apple-Style Headline */}
+        {/* Headline */}
         <div className="floating-font px-2">
-          <h1 className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[100px] font-extrabold tracking-tight sm:tracking-[-0.04em] leading-[1.05] sm:leading-[0.95] max-w-5xl mb-4 sm:mb-6 select-none">
-            <span className="text-gradient-dark block">Technology,</span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0071e3] via-[#438eff] to-[#0071e3] dark:from-white dark:via-apple-lightgray dark:to-apple-gray">
-              made personal.
-            </span>
+          <h1 className="text-4xl xs:text-5xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight sm:tracking-[-0.035em] leading-[1.08] max-w-4xl mx-auto mb-4 sm:mb-6 select-none text-gradient-dark text-balance">
+            Pre-owned phones, checked and priced fair.
           </h1>
         </div>
 
-        {/* Floating Supporting Text */}
-        <p className="text-sm sm:text-lg md:text-2xl text-apple-gray font-normal max-w-2xl mx-auto mb-8 sm:mb-10 px-4 leading-relaxed floating-font-delayed">
+        {/* Supporting text */}
+        <p className="text-sm sm:text-lg md:text-xl text-apple-gray font-normal max-w-2xl mx-auto mb-8 sm:mb-10 px-4 leading-relaxed floating-font-delayed">
           {STORE_CONFIG.subTagline}
         </p>
 
         {/* CTA Buttons - Stack cleanly on mobile */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-14 w-full sm:w-auto px-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-10 w-full sm:w-auto px-4">
           <button
             onClick={() => {
               soundFx.playClick();
-              onExploreClick();
+              onCategoryClick("phones");
             }}
             className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#0071e3] hover:bg-[#0077ed] text-white font-semibold text-sm sm:text-base tracking-tight transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
-            data-cursor-text="EXPLORE"
+            data-cursor-text="PHONES"
           >
-            <span>Explore Gadgets</span>
+            <span>Browse phones</span>
             <ChevronRight className="w-4 h-4 text-white group-hover:translate-x-1 transition-transform" />
           </button>
+
+          <a
+            href={STORE_CONFIG.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => soundFx.playClick()}
+            className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-[#25D366]/15 hover:bg-[#25D366]/25 border border-[#25D366]/30 text-[#128C7E] dark:text-[#25D366] font-semibold text-sm sm:text-base tracking-tight transition-all duration-300 flex items-center justify-center gap-2"
+          >
+            <MessageCircle className="w-4 h-4 fill-current" />
+            <span>Message on WhatsApp</span>
+          </a>
 
           <button
             onClick={() => {
@@ -124,19 +133,33 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             className="w-full sm:w-auto px-7 py-3.5 rounded-full apple-pill hover:bg-black/5 dark:hover:bg-white/15 text-apple-text dark:text-white font-semibold text-sm sm:text-base tracking-tight transition-all duration-300 flex items-center justify-center gap-2 group shadow-xs"
           >
             <MapPin className="w-4 h-4 text-brand-gold" />
-            <span>Visit Our Store</span>
+            <span>Visit our store</span>
           </button>
+        </div>
 
-          <button
-            onClick={() => {
-              soundFx.playClick();
-              on3DClick();
-            }}
-            className="w-full sm:w-auto px-5 py-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.06] hover:bg-black/[0.06] dark:hover:bg-white/[0.12] border border-blue-500/20 text-[#0071e3] dark:text-brand-neon font-mono text-xs sm:text-sm tracking-wide transition-all duration-300 flex items-center justify-center gap-2"
-          >
-            <Box className="w-4 h-4 text-[#0071e3] dark:text-brand-neon animate-spin-slow" />
-            <span>3D Interactive Studio</span>
-          </button>
+        {/* The five categories, one tap away */}
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10 sm:mb-14 px-2" aria-label="Shop by category">
+          {CATEGORIES.map((c) => {
+            const range = priceRange(c.id, "all");
+            return (
+              <button
+                key={c.id}
+                onClick={() => {
+                  soundFx.playClick();
+                  onCategoryClick(c.id);
+                }}
+                className="flex items-center gap-2.5 pl-1.5 pr-4 py-1.5 rounded-full apple-pill hover:bg-black/[0.05] dark:hover:bg-white/[0.12] transition-colors text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0071e3]"
+              >
+                <span className="w-9 h-9 rounded-full bg-white/80 dark:bg-white/10 flex items-center justify-center overflow-hidden flex-shrink-0">
+                  <img src={c.image} alt="" className="w-8 h-8 object-contain" />
+                </span>
+                <span className="leading-tight">
+                  <span className="block text-sm font-semibold text-apple-text dark:text-white">{c.name}</span>
+                  {range && <span className="block text-[11px] text-apple-gray">from {inr(range.min)}</span>}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {/* Main Real Storefront Home Screen Banner Visual */}
@@ -184,8 +207,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="absolute top-4 sm:top-6 right-4 sm:right-8 z-10 hidden md:flex items-center gap-3 bg-black/70 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-2xl shadow-lg">
                 <ShieldCheck className="w-5 h-5 text-emerald-400" />
                 <div className="text-left text-xs">
-                  <div className="font-semibold text-white">Genuine Devices & Repairs</div>
-                  <div className="text-[11px] text-apple-lightgray">Official Brand Warranty</div>
+                  <div className="font-semibold text-white">Quality-checked phones</div>
+                  <div className="text-[11px] text-apple-lightgray">Store warranty on every phone</div>
                 </div>
               </div>
             </div>
@@ -223,15 +246,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-[11px] sm:text-xs">
           <span className="flex items-center gap-1.5 text-apple-text/80 dark:text-white/90 font-medium">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-            Flagship Smartphones
+            Checked pre-owned phones
           </span>
           <span className="flex items-center gap-1.5 text-apple-text/80 dark:text-white/90 font-medium">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-            Studio Acoustics
+            Brand-new accessories
           </span>
           <span className="flex items-center gap-1.5 text-apple-text/80 dark:text-white/90 font-medium">
             <CheckCircle2 className="w-3.5 h-3.5 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-            45-Min Express Repair
+            Normal, Mid-range and Premium
           </span>
         </div>
 

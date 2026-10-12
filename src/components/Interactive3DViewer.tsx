@@ -12,6 +12,7 @@ import {
   Zap,
   Play,
   Pause,
+  Compass,
 } from "lucide-react";
 
 interface Interactive3DViewerProps {
@@ -176,8 +177,8 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
   };
 
   const colors = selectedProduct.colors || [
-    { name: "Space Titanium", hex: "#8a8a93" },
-    { name: "Deep Obsidian", hex: "#141416" },
+    { name: "Silver", hex: "#8a8a93" },
+    { name: "Black", hex: "#141416" },
   ];
 
   return (
@@ -196,7 +197,7 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full apple-pill text-xs font-mono uppercase tracking-widest text-[#0071e3] dark:text-brand-neon mb-3 sm:mb-4 shadow-xs">
             <Sparkles className="w-3.5 h-3.5" />
-            360° Hardware Studio
+            360° Product Studio
           </div>
           <div className="floating-font px-2">
             <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-apple-text dark:text-white mb-3 sm:mb-4">
@@ -204,7 +205,7 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
             </h2>
           </div>
           <p className="text-apple-gray text-xs sm:text-base md:text-lg font-normal floating-font-delayed px-4">
-            Drag to rotate 360°, inspect aerospace titanium finishes, and explore internal acoustic chambers in real time.
+            Choose a product, drag to spin it, and tap the dots to see what makes it special.
           </p>
         </div>
 
@@ -217,7 +218,7 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
                 <button
                   key={prod.id}
                   onClick={() => handleProductTabChange(prod)}
-                  className={`relative px-3.5 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                  className={`relative isolate px-3.5 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-medium whitespace-nowrap transition-all duration-300 ${
                     isSelected
                       ? "text-white dark:text-dark-950 font-semibold shadow-sm"
                       : "text-apple-text/70 dark:text-apple-gray hover:text-apple-text dark:hover:text-white"
@@ -332,13 +333,16 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
               />
             </div>
 
-            {/* Pulsing Interactive Hotspots */}
+            {/* Pulsing Interactive Hotspots.
+                Positions are percentages of the product image, so they sit in a
+                square layer that matches the image size exactly. */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 aspect-square h-[260px] xs:h-[320px] sm:h-[420px] z-30 pointer-events-none">
             {selectedProduct.hotspots?.map((spot, idx) => {
               const isActive = activeHotspot === idx;
               return (
                 <div
                   key={idx}
-                  className="absolute z-30 transition-all duration-300"
+                  className="absolute z-30 -translate-x-1/2 -translate-y-1/2 transition-all duration-300 pointer-events-auto"
                   style={{
                     top: `${spot.y}%`,
                     left: `${spot.x}%`,
@@ -378,6 +382,7 @@ export const Interactive3DViewer: React.FC<Interactive3DViewerProps> = ({
                 </div>
               );
             })}
+            </div>
           </div>
 
           {/* Bottom Bar: Color Switcher & Direct Purchase Action */}

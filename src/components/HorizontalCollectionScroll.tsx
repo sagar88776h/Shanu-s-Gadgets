@@ -109,7 +109,7 @@ export const HorizontalCollectionScroll: React.FC<HorizontalCollectionScrollProp
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryTabChange(cat.id)}
-                  className={`relative px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 ${
+                  className={`relative isolate px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 ${
                     isActive
                       ? "text-white dark:text-dark-950 shadow-sm"
                       : "text-apple-text/70 dark:text-apple-gray hover:text-apple-text dark:hover:text-white"

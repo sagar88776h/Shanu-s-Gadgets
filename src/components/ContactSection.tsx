@@ -16,40 +16,33 @@ export const ContactSection: React.FC = () => {
   const [form, setForm] = useState({
     name: "",
     phone: "",
-    service: "Gadget Inquiry",
+    service: "Pre-owned Phone",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
-  const [whatsappUrl, setWhatsappUrl] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    const msg = `Hello Shanu's Gadgets,\n\nName: ${form.name}\nPhone: ${form.phone}\nService Interested: ${form.service}\nMessage: ${form.message}`;
-    const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
-    setWhatsappUrl(url);
-
-    // Open immediately within the click handler (not after a delay) so
-    // browsers still treat it as a direct user gesture and don't silently
-    // block the popup - a blocked WhatsApp tab would otherwise leave the
-    // user staring at a false "success" state.
-    const opened = window.open(url, "_blank");
-
     soundFx.playChime();
     setSubmitted(true);
 
-    if (opened) {
-      try {
-        confetti({
-          particleCount: 60,
-          spread: 70,
-          origin: { y: 0.7 },
-          colors: ["#0071e3", "#f5a623", "#ffffff"],
-        });
-      } catch {
-        // Confetti fallback
-      }
+    try {
+      confetti({
+        particleCount: 60,
+        spread: 70,
+        origin: { y: 0.7 },
+        colors: ["#0071e3", "#f5a623", "#ffffff"],
+      });
+    } catch {
+      // Confetti fallback
     }
+
+    const msg = `Hello Shanu's Gadgets,\n\nName: ${form.name}\nPhone: ${form.phone}\nService Interested: ${form.service}\nMessage: ${form.message}`;
+    const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+
+    setTimeout(() => {
+      window.open(url, "_blank");
+    }, 800);
   };
 
   return (
@@ -72,7 +65,7 @@ export const ContactSection: React.FC = () => {
                 </h2>
               </div>
               <p className="text-apple-gray text-base sm:text-lg font-normal leading-relaxed floating-font-delayed">
-                Whether you want to check live stock, schedule an express repair, or ask for gadget recommendations, we are always ready.
+                Check live stock, ask about a phone’s condition, find a cover for your model, or get a recommendation for your budget.
               </p>
             </div>
 
@@ -163,17 +156,6 @@ export const ContactSection: React.FC = () => {
                   <p className="text-xs text-apple-gray">
                     Thank you, {form.name}! Your message has been prepared. Our store specialist will respond immediately.
                   </p>
-                  <p className="text-[11px] text-apple-gray">
-                    Didn't see a WhatsApp tab open?{" "}
-                    <a
-                      href={whatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-[#0071e3] dark:text-brand-gold font-semibold underline"
-                    >
-                      Open it manually
-                    </a>
-                  </p>
                   <button
                     onClick={() => setSubmitted(false)}
                     className="px-5 py-2 rounded-full apple-pill text-xs text-apple-text dark:text-white"
@@ -221,12 +203,13 @@ export const ContactSection: React.FC = () => {
                         onChange={(e) => setForm({ ...form, service: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl bg-black/[0.02] dark:bg-black/50 border border-black/10 dark:border-white/10 text-apple-text dark:text-white text-sm focus:outline-none focus:border-[#0071e3] transition-colors"
                       >
-                        <option value="Flagship Smartphone Purchase">Flagship Smartphone</option>
-                        <option value="Studio Audio & Headphones">Studio Audio & Headphones</option>
-                        <option value="Express Screen/Battery Repair">Express Screen/Battery Repair</option>
-                        <option value="Custom Laser Skins & Graphics">Custom Laser Skins & Graphics</option>
-                        <option value="MagSafe & Fast Chargers">MagSafe & Fast Chargers</option>
-                        <option value="General Store Visit">General Store Visit</option>
+                        <option value="Pre-owned Phone">Pre-owned phone</option>
+                        <option value="AirPods">AirPods</option>
+                        <option value="Neckband">Neckband</option>
+                        <option value="Cover">Cover (tell us your phone model)</option>
+                        <option value="Accessories">Charger, power bank or accessory</option>
+                        <option value="Repair or Custom Skin">Repair or custom skin</option>
+                        <option value="General Store Visit">General store visit</option>
                       </select>
                     </div>
                   </div>

@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import type { Product } from "../data/storeData";
-import { formatPrice, getWhatsAppOrderUrl, soundFx } from "../lib/utils";
+import { formatPrice, getProductWhatsAppUrl, soundFx } from "../lib/utils";
+import { TierBadge } from "./TierBadge";
+import { ConditionReport } from "./ConditionReport";
 import confetti from "canvas-confetti";
 import {
   X,
@@ -32,6 +34,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   onClose,
   onAddToCart,
 }) => {
+  if (!product) return null;
+
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const [activeDetailTab, setActiveDetailTab] = useState<"features" | "specs" | "box">("features");
   const [addedAnimation, setAddedAnimation] = useState(false);
@@ -51,24 +55,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   const velocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const lastPosRef = useRef<{ x: number; y: number; time: number }>({ x: 0, y: 0, time: 0 });
 
-  const colors = product?.colors || [
-    { name: "Space Black", hex: "#1f2022" },
-    { name: "Titanium Silver", hex: "#a8a8a4" },
-  ];
-
-  // Lock background scroll and support Escape-to-close while the modal is open
-  useEffect(() => {
-    if (!product) return;
-    document.body.style.overflow = "hidden";
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [product, onClose]);
+  const colors = product.colors ?? [];
 
   // Floating breathing physics on mobile & desktop
   useEffect(() => {
@@ -193,7 +180,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
   };
 
   const handleAdd = () => {
-    if (!product) return;
     soundFx.playChime();
     setAddedAnimation(true);
     onAddToCart(product);
@@ -211,8 +197,6 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
 
     setTimeout(() => setAddedAnimation(false), 2000);
   };
-
-  if (!product) return null;
 
   return (
     <div className="fixed inset-0 z-[110] bg-black/60 dark:bg-black/80 backdrop-blur-xl flex items-center justify-center p-2 sm:p-6 overflow-y-auto animate-fade-in select-none">
@@ -365,14 +349,15 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
             {/* Right: Product Details & Buying Actions */}
             <div className="lg:col-span-6 space-y-4 sm:space-y-6">
               <div>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="flex items-center gap-1 text-amber-500 text-xs">
-                    <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    <span className="font-bold">{product.rating}</span>
-                  </div>
-                  <span className="text-xs text-apple-gray">
-                    ({product.reviewCount} Verified Reviews)
-                  </span>
+                <div className="flex items-center gap-2 mb-2">
+                  <TierBadge tier={product.tier} />
+                  <span className="text-xs text-apple-gray">{product.categoryLabel}</span>
+                  {product.rating !== undefined && (
+                    <span className="flex items-center gap-1 text-amber-500 text-xs">
+                      <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      <span className="font-bold">{product.rating}</span>
+                    </span>
+                  )}
                 </div>
 
                 <h2 className="text-2xl sm:text-4xl font-black text-apple-text dark:text-white tracking-tight">
@@ -394,7 +379,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </span>
                 )}
                 <span className="text-[11px] sm:text-xs font-mono text-emerald-600 dark:text-emerald-400 font-medium">
-                  (Includes Official Store Warranty)
+                  Includes store warranty
                 </span>
               </div>
 
@@ -402,11 +387,13 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 {product.description}
               </p>
 
+              {product.condition && <ConditionReport condition={product.condition} />}
+
               {/* Color Finishes */}
-              {colors.length > 0 && (
+              {colors.length > 1 && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-apple-gray font-mono">FINISH:</span>
+                    <span className="text-apple-gray font-mono">Colour</span>
                     <span className="text-apple-text dark:text-white font-medium">{colors[selectedColor]?.name}</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -450,7 +437,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                   </button>
 
                   <a
-                    href={getWhatsAppOrderUrl(product.name, product.price)}
+                    href={getProductWhatsAppUrl(product)}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => soundFx.playClick()}
@@ -465,9 +452,9 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({
                 <div className="p-2.5 sm:p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.04] border border-black/[0.06] dark:border-white/[0.08] flex items-center justify-between text-[11px] sm:text-xs">
                   <div className="flex items-center gap-2 text-apple-gray truncate mr-2">
                     <Truck className="w-4 h-4 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-                    <span className="truncate">In-Store Pickup Available Today at Madhupur</span>
+                    <span className="truncate">Pick up in store at Madhupur</span>
                   </div>
-                  <span className="font-mono text-emerald-600 dark:text-emerald-400 font-bold flex-shrink-0">READY IN 15 MIN</span>
+                  <span className="text-emerald-600 dark:text-emerald-400 font-semibold flex-shrink-0">{product.availability}</span>
                 </div>
               </div>
             </div>

@@ -1,9 +1,11 @@
 import React, { useRef, useState } from "react";
 import type { Product } from "../data/storeData";
-import { STORE_CONFIG } from "../data/storeData";
-import { soundFx } from "../lib/utils";
+import { soundFx, getProductWhatsAppUrl } from "../lib/utils";
+import { TierBadge } from "./TierBadge";
+import { GRADE_STYLE } from "../lib/tierStyles";
 import {
   Star,
+  Battery,
   ShoppingBag,
   MessageCircle,
   Box,
@@ -15,6 +17,8 @@ interface ProductCard3DProps {
   onSelectProduct: (product: Product) => void;
   onAddToCart: (product: Product) => void;
   onOpen3D?: (product: Product) => void;
+  /** Hide the tier badge when the card already sits inside a tier section. */
+  hideTier?: boolean;
 }
 
 export const ProductCard3D: React.FC<ProductCard3DProps> = ({
@@ -22,6 +26,7 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
   onSelectProduct,
   onAddToCart,
   onOpen3D,
+  hideTier = false,
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const [rotX, setRotX] = useState<number>(0);
@@ -87,23 +92,25 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
 
       {/* Card Top Details */}
       <div style={{ transform: "translateZ(20px)", transformStyle: "preserve-3d" }}>
-        {/* Badges Bar */}
-        <div className="flex items-center justify-between gap-2 mb-3">
-          <span className="text-[10px] font-mono uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-black/[0.04] dark:bg-white/10 text-apple-text dark:text-white font-medium">
-            {product.categoryLabel}
-          </span>
-          <div className="flex items-center gap-1.5">
-            <div className="flex items-center gap-1 text-[11px] font-mono text-amber-500 font-bold">
-              <Star className="w-3 h-3 fill-current text-amber-400" />
-              <span>{product.rating}</span>
+        {/* Tier + badge (inside a tier section the tier is already the heading) */}
+        {!hideTier && (
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <TierBadge tier={product.tier} />
+            <div className="flex items-center gap-1.5">
+              {product.rating !== undefined && (
+                <div className="flex items-center gap-1 text-[11px] text-amber-500 font-bold">
+                  <Star className="w-3 h-3 fill-current text-amber-400" />
+                  <span>{product.rating}</span>
+                </div>
+              )}
+              {product.badge && (
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-black/[0.05] dark:bg-white/10 text-apple-text dark:text-white">
+                  {product.badge}
+                </span>
+              )}
             </div>
-            {product.badge && (
-              <span className="text-[10px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold font-bold">
-                {product.badge}
-              </span>
-            )}
           </div>
-        </div>
+        )}
 
         {/* 3D Floating Product Image Stage */}
         <div
@@ -117,6 +124,11 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
             transformStyle: "preserve-3d",
           }}
         >
+          {hideTier && product.badge && (
+            <span className="absolute top-3 left-3 z-10 text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-white/90 dark:bg-white/15 backdrop-blur text-apple-text dark:text-white shadow-sm">
+              {product.badge}
+            </span>
+          )}
           <img
             src={product.image}
             alt={product.name}
@@ -127,12 +139,15 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
           <div className="absolute inset-0 bg-black/0 group-hover/image:bg-black/15 transition-colors flex items-center justify-center">
             <span className="opacity-0 group-hover/image:opacity-100 transition-all duration-200 px-3.5 py-1.5 rounded-full bg-white/95 dark:bg-black/95 text-apple-text dark:text-white text-xs font-semibold shadow-lg flex items-center gap-1.5 transform translate-y-2 group-hover/image:translate-y-0">
               <Eye className="w-3.5 h-3.5 text-[#0071e3]" />
-              <span>Inspect Details</span>
+              <span>View details</span>
             </span>
           </div>
         </div>
 
         {/* Product Title & Tagline */}
+        <p className="text-[11px] text-apple-gray mb-0.5" style={{ transform: "translateZ(18px)" }}>
+          {product.categoryLabel}
+        </p>
         <h3
           onClick={() => {
             soundFx.playClick();
@@ -150,21 +165,33 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
           {product.tagline}
         </p>
 
-        {/* Key Specs Pills */}
-        {product.specs && product.specs.length > 0 && (
-          <div
-            className="mt-3 flex flex-wrap gap-1.5"
-            style={{ transform: "translateZ(15px)" }}
-          >
-            {product.specs.slice(0, 2).map((s, idx) => (
-              <span
-                key={idx}
-                className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-black/[0.03] dark:bg-white/[0.05] text-apple-gray"
-              >
-                {s.value}
-              </span>
-            ))}
+        {/* Condition (used phones) or key specs */}
+        {product.condition ? (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5" style={{ transform: "translateZ(15px)" }}>
+            <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-md ${GRADE_STYLE[product.condition.grade]}`}>
+              {product.condition.grade}
+            </span>
+            <span className="text-[11px] px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-apple-text/70 dark:text-apple-gray flex items-center gap-1">
+              <Battery className="w-3 h-3" />
+              {product.condition.battery}%
+            </span>
+            <span className="text-[11px] px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-apple-text/70 dark:text-apple-gray">
+              {product.condition.storage}
+            </span>
           </div>
+        ) : (
+          product.specs.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-1.5" style={{ transform: "translateZ(15px)" }}>
+              {product.specs.slice(0, 2).map((sp, idx) => (
+                <span
+                  key={idx}
+                  className="text-[11px] px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.06] text-apple-text/70 dark:text-apple-gray"
+                >
+                  {sp.value}
+                </span>
+              ))}
+            </div>
+          )
         )}
       </div>
 
@@ -216,16 +243,14 @@ export const ProductCard3D: React.FC<ProductCard3DProps> = ({
 
         {/* WhatsApp Order */}
         <a
-          href={`https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(
-            `Hello Shanu's Gadgets! I am interested in purchasing: ${product.name} (₹${product.price.toLocaleString('en-IN')}). Is it currently available for store pickup?`
-          )}`}
+          href={getProductWhatsAppUrl(product)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => soundFx.playClick()}
           className="w-full py-2 rounded-xl bg-[#25D366]/10 hover:bg-[#25D366]/20 border border-[#25D366]/30 text-[#128C7E] dark:text-[#25D366] text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors"
         >
           <MessageCircle className="w-3.5 h-3.5 fill-current" />
-          <span>WhatsApp Order</span>
+          <span>Ask on WhatsApp</span>
         </a>
       </div>
     </div>

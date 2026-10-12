@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import type { Product } from "../data/storeData";
 import { STORE_CONFIG } from "../data/storeData";
 import { formatPrice, soundFx } from "../lib/utils";
@@ -33,19 +33,6 @@ export const CartSlideOver: React.FC<CartSlideOverProps> = ({
   onUpdateQuantity,
   onRemoveItem,
 }) => {
-  useEffect(() => {
-    if (!isOpen) return;
-    document.body.style.overflow = "hidden";
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
-
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce(
@@ -109,7 +96,7 @@ export const CartSlideOver: React.FC<CartSlideOverProps> = ({
               </div>
               <h4 className="text-base font-bold text-apple-text dark:text-white">Your bag is empty</h4>
               <p className="text-xs text-apple-gray max-w-xs font-normal">
-                Discover flagship phones, titanium accessories, or explore our studio audio collection.
+                Browse pre-owned phones, AirPods, neckbands, covers and accessories.
               </p>
               <button
                 onClick={() => {
@@ -200,7 +187,7 @@ export const CartSlideOver: React.FC<CartSlideOverProps> = ({
 
             <div className="flex items-center gap-2 text-[11px] text-apple-gray font-mono">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>Official Warranty & Instant In-Store Pickup</span>
+              <span>Store warranty & in-store pickup</span>
             </div>
 
             {/* Actions */}

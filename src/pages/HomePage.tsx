@@ -1,7 +1,10 @@
 import React from "react";
 import type { Product } from "../data/storeData";
 import type { PageRoute } from "../components/Navbar";
-import { STORE_CONFIG, CATEGORIES, HERO_PRODUCTS } from "../data/storeData";
+import type { CategoryId, Tier } from "../data/storeData";
+import { STORE_CONFIG, HERO_PRODUCTS } from "../data/storeData";
+import { CategoryBento } from "../components/CategoryBento";
+import { PriceGuide } from "../components/PriceGuide";
 import { HeroSection } from "../components/HeroSection";
 import { ProductCard3D } from "../components/ProductCard3D";
 import { WhyShanusGadgets } from "../components/WhyShanusGadgets";
@@ -10,16 +13,15 @@ import { SocialGallery } from "../components/SocialGallery";
 import { soundFx } from "../lib/utils";
 import {
   ArrowRight,
-  Sparkles,
   Box,
   MapPin,
   ChevronRight,
   ShieldCheck,
-  Zap,
+  ShoppingBag,
 } from "lucide-react";
 
 interface HomePageProps {
-  onNavigatePage: (page: PageRoute, category?: string) => void;
+  onNavigatePage: (page: PageRoute, category?: string, tier?: string) => void;
   onSelectProduct: (product: Product) => void;
   onAddToCart: (product: Product) => void;
   onReplayIntro: () => void;
@@ -37,22 +39,49 @@ export const HomePage: React.FC<HomePageProps> = ({
       <HeroSection
         onExploreClick={() => onNavigatePage("products")}
         onVisitStoreClick={() => onNavigatePage("store")}
-        on3DClick={() => onNavigatePage("studio")}
+        onCategoryClick={(c: CategoryId) => onNavigatePage("products", c)}
         onReplayIntro={onReplayIntro}
       />
 
-      {/* 02: Curated Flagship Showcase Teaser */}
+      {/* 02: Shop by category (bento) */}
+      <section id="categories" className="py-20 sm:py-28 bg-[#fbfbfd] dark:bg-[#07070a] border-t border-black/[0.06] dark:border-white/[0.06] transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-10 sm:mb-14">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-apple-text dark:text-white">
+              Shop by category.
+            </h2>
+            <p className="text-apple-gray text-base sm:text-lg mt-3 leading-relaxed">
+              Phones are pre-owned, checked and graded. Everything else is brand new. Open a category, or jump straight to a tier.
+            </p>
+          </div>
+          <CategoryBento onOpen={(c: CategoryId, t?: Tier) => onNavigatePage("products", c, t)} />
+        </div>
+      </section>
+
+      {/* 03: Price guide */}
+      <section className="py-20 sm:py-28 bg-white dark:bg-[#030304] border-t border-black/[0.06] dark:border-white/[0.06] transition-colors duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mb-8 sm:mb-10">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-apple-text dark:text-white">
+              Pick a tier by budget.
+            </h2>
+            <p className="text-apple-gray text-base sm:text-lg mt-3 leading-relaxed">
+              Normal for everyday value, Mid-range for the best balance, Premium for top quality. Tap any price to see what is inside.
+            </p>
+          </div>
+          <PriceGuide onOpen={(c: CategoryId, t: Tier) => onNavigatePage("products", c, t)} />
+        </div>
+      </section>
+
+      {/* 04: Featured picks */}
       <section className="py-24 bg-[#fbfbfd] dark:bg-[#07070a] border-t border-black/[0.06] dark:border-white/[0.06] transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full apple-pill text-xs font-mono uppercase tracking-widest text-[#0071e3] dark:text-brand-gold mb-3 shadow-xs">
-                <Sparkles className="w-3.5 h-3.5" />
-                Curated Flagships
-              </div>
               <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-apple-text dark:text-white">
-                Featured Highlights.
+                Featured picks.
               </h2>
+              <p className="text-apple-gray text-base mt-3">One standout from each of our top categories.</p>
             </div>
             <button
               onClick={() => {
@@ -61,7 +90,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               }}
               className="inline-flex items-center gap-2 text-sm font-semibold text-[#0071e3] hover:underline"
             >
-              <span>View All Gadgets</span>
+              <span>Shop everything</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -91,10 +120,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                 Interactive 360° Studio
               </div>
               <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-apple-text dark:text-white">
-                Inspect Hardware in 3D Space.
+                Take a closer look.
               </h3>
               <p className="text-sm sm:text-base text-apple-gray">
-                Rotate flagship smartphones, change aerospace titanium finishes, and explore internal acoustic chambers before your store visit.
+                Rotate our featured phone, earbuds, neckband and power bank, and tap the hotspots to see what makes each one special.
               </p>
               <div className="pt-2">
                 <button
@@ -123,68 +152,10 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Click to Rotate 360°
                 </span>
                 <span className="text-[10px] font-mono text-apple-gray mt-0.5">
-                  Apex Titanium Pro
+                  {HERO_PRODUCTS[0]?.name}
                 </span>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 04: Visual Categories Teaser */}
-      <section className="py-20 bg-[#fbfbfd] dark:bg-[#07070a] border-t border-black/[0.06] dark:border-white/[0.06]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full apple-pill text-xs font-mono uppercase tracking-widest text-brand-gold mb-3 shadow-xs">
-                <Zap className="w-3.5 h-3.5" />
-                Departments
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-apple-text dark:text-white">
-                Explore Categories.
-              </h2>
-            </div>
-            <button
-              onClick={() => {
-                soundFx.playClick();
-                onNavigatePage("categories");
-              }}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#0071e3] hover:underline"
-            >
-              <span>View All 8 Categories</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            {CATEGORIES.slice(0, 4).map((cat) => (
-              <div
-                key={cat.id}
-                onClick={() => {
-                  soundFx.playClick();
-                  onNavigatePage("products", cat.slug);
-                }}
-                className="group relative rounded-3xl overflow-hidden aspect-[4/5] bg-black cursor-pointer shadow-md hover:shadow-xl transition-all duration-300"
-              >
-                <img
-                  src={cat.image}
-                  alt={cat.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-left">
-                  <span className="text-[10px] font-mono text-brand-gold uppercase tracking-wider block mb-1">
-                    {cat.count} Products
-                  </span>
-                  <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
-                    {cat.name}
-                  </h4>
-                  <p className="text-xs text-apple-lightgray font-light mt-0.5 line-clamp-1">
-                    {cat.tagline}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -216,14 +187,14 @@ export const HomePage: React.FC<HomePageProps> = ({
                   Experience Shanu’s Gadgets In Person.
                 </h3>
                 <p className="text-sm text-apple-gray mt-2 leading-relaxed">
-                  Touch the newest devices, get 45-min on-the-spot display repairs, and have our specialists guide you to the perfect daily setup.
+                  Compare phones side by side, try earbuds and neckbands, and get honest advice on which tier suits your budget.
                 </p>
               </div>
 
               <div className="space-y-2 pt-2 border-t border-black/[0.06] dark:border-white/[0.08] text-xs text-apple-text/80 dark:text-apple-lightgray">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-[#0071e3]" />
-                  <span>100% Genuine Brand Seals & Official Invoices</span>
+                  <span>Store invoice and warranty with every phone</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-brand-gold" />

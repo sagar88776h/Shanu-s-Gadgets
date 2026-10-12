@@ -8,28 +8,13 @@ interface CinematicIntroProps {
   isFirstVisit?: boolean;
 }
 
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-
 export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) => {
   const [step, setStep] = useState<number>(0);
   const [isMuted, setIsMuted] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [reducedMotion] = useState(prefersReducedMotion);
   const timerRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  // Respect prefers-reduced-motion: skip the cinematic sequence entirely
-  // and drop straight into the homepage instead of running the full
-  // multi-step scale/blur/parallax animation.
   useEffect(() => {
-    if (!reducedMotion) return;
-    const t = setTimeout(onComplete, 50);
-    return () => clearTimeout(t);
-  }, [reducedMotion, onComplete]);
-
-  useEffect(() => {
-    if (reducedMotion) return;
     // Step 0 -> 1: Brand Logo & Title Reveal (0.6s)
     const t1 = setTimeout(() => {
       setStep(1);
@@ -76,9 +61,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) =>
       timerRef.current.forEach(clearTimeout);
       clearInterval(interval);
     };
-  }, [onComplete, isMuted, reducedMotion]);
-
-  if (reducedMotion) return null;
+  }, [onComplete, isMuted]);
 
   const handleSkip = () => {
     soundFx.playClick();
@@ -125,7 +108,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) =>
         <div className="absolute bottom-16 left-8 md:left-16 z-20 max-w-xl">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/60 border border-white/20 text-xs font-mono uppercase tracking-widest text-brand-gold mb-3 backdrop-blur-md">
             <span className="w-2 h-2 rounded-full bg-brand-gold animate-ping" />
-            Flagship Storefront • Madhupur, Kamalasagar
+            Madhupur, Kamalasagar
           </div>
           <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-2">
             Where Technology Meets Precision.
@@ -164,7 +147,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete }) =>
             Touch. Feel. Experience.
           </h2>
           <p className="text-apple-gray text-sm md:text-base font-light">
-            Genuine flagship devices, curated audio, express repairs, and personalized advice.
+            Checked pre-owned phones, brand-new accessories and honest advice.
           </p>
         </div>
       </div>
