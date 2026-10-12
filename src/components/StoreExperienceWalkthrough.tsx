@@ -95,7 +95,7 @@ export const StoreExperienceWalkthrough: React.FC = () => {
         {/* Cinematic Multi-View Gallery Stage */}
         <div className="rounded-3xl apple-card dark:glass-card border border-black/[0.06] dark:border-white/10 p-4 sm:p-8 md:p-12 mb-16 shadow-xl">
           {/* Animated Tab Switcher with Sliding Pill Indicator */}
-          <div className="relative inline-flex p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/10 backdrop-blur-xl mb-8 overflow-x-auto no-scrollbar shadow-xs">
+          <div className="relative flex max-w-full p-1.5 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/[0.06] dark:border-white/10 backdrop-blur-xl mb-8 overflow-x-auto no-scrollbar shadow-xs">
             <div className="flex items-center gap-1 relative z-10">
               {views.map((v, idx) => {
                 const isActive = activeView === idx;

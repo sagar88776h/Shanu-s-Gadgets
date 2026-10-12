@@ -12,7 +12,6 @@ import {
   Zap,
   Play,
   Pause,
-  Compass,
 } from "lucide-react";
 
 interface Interactive3DViewerProps {

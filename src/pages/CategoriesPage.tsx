@@ -1,7 +1,7 @@
 import React from "react";
 import { CATEGORIES } from "../data/storeData";
 import { soundFx } from "../lib/utils";
-import { ArrowLeft, ArrowRight, Sparkles, Layers } from "lucide-react";
+import { ArrowLeft, ArrowRight, Layers } from "lucide-react";
 
 interface CategoriesPageProps {
   onSelectCategory: (slug: string) => void;

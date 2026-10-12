@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { Product } from "../data/storeData";
 import { STORE_CONFIG } from "../data/storeData";
 import { formatPrice, soundFx } from "../lib/utils";
@@ -33,6 +33,19 @@ export const CartSlideOver: React.FC<CartSlideOverProps> = ({
   onUpdateQuantity,
   onRemoveItem,
 }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = "hidden";
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const subtotal = cartItems.reduce(

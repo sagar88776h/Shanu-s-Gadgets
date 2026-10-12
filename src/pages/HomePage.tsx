@@ -15,7 +15,6 @@ import {
   MapPin,
   ChevronRight,
   ShieldCheck,
-  ShoppingBag,
   Zap,
 } from "lucide-react";
 
