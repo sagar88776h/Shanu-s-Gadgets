@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { STORE_CONFIG } from "../data/storeData";
+import React from "react";
+import { STORE_CONFIG, CATEGORIES } from "../data/storeData";
 import { soundFx } from "../lib/utils";
 import type { PageRoute } from "./Navbar";
 import {
@@ -16,8 +16,6 @@ interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro }) => {
-  const currentYear = useMemo(() => new Date().getFullYear(), []);
-
   const scrollToTop = () => {
     soundFx.playClick();
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro })
             </p>
 
             <p className="text-xs text-apple-gray font-normal max-w-sm leading-relaxed">
-              Madhupur & Kamalasagar’s premier destination for flagship smartphones, studio acoustics, titanium accessories, custom 3D skins, and certified express repairs.
+              Madhupur & Kamalasagar’s store for quality-checked pre-owned phones, plus brand-new AirPods, neckbands, covers and accessories.
             </p>
 
             <div className="pt-2 flex items-center gap-3">
@@ -102,38 +100,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro })
 
           {/* Quick Links */}
           <div className="space-y-3 text-xs">
-            <h5 className="font-mono uppercase tracking-widest text-apple-text dark:text-white font-bold">Curated Pages</h5>
+            <h5 className="font-mono uppercase tracking-widest text-apple-text dark:text-white font-bold">Shop</h5>
             <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => handleLink("products")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  Featured Gadgets Catalog
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleLink("studio")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  3D Interactive Studio
-                </button>
-              </li>
+              {CATEGORIES.map((c) => (
+                <li key={c.id}>
+                  <button
+                    onClick={() => handleLink("products", c.id)}
+                    className="hover:text-apple-text dark:hover:text-white transition-colors"
+                  >
+                    {c.name}
+                  </button>
+                </li>
+              ))}
               <li>
                 <button
                   onClick={() => handleLink("categories")}
                   className="hover:text-apple-text dark:hover:text-white transition-colors"
                 >
-                  All 8 Departments
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleLink("store")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  Store & Showroom Tour
+                  Compare tiers and prices
                 </button>
               </li>
             </ul>
@@ -141,40 +125,24 @@ export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro })
 
           {/* Services & In-Store */}
           <div className="space-y-3 text-xs">
-            <h5 className="font-mono uppercase tracking-widest text-apple-text dark:text-white font-bold">Care & Repairs</h5>
+            <h5 className="font-mono uppercase tracking-widest text-apple-text dark:text-white font-bold">Explore</h5>
             <ul className="space-y-2">
-              <li>
-                <button
-                  onClick={() => handleLink("contact")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  45-Min Screen Replacement
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleLink("contact")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  Original Battery Refresh
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleLink("contact")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  Laser Cut 3M Skins
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => handleLink("why-us")}
-                  className="hover:text-apple-text dark:hover:text-white transition-colors"
-                >
-                  Warranty & Authentication
-                </button>
-              </li>
+              {[
+                { label: "Store & showroom tour", page: "store" as PageRoute },
+                { label: "How we check phones", page: "why-us" as PageRoute },
+                { label: "Customer reviews", page: "reviews" as PageRoute },
+                { label: "3D Product Studio", page: "studio" as PageRoute },
+                { label: "Repairs, skins & contact", page: "contact" as PageRoute },
+              ].map((l) => (
+                <li key={l.page}>
+                  <button
+                    onClick={() => handleLink(l.page)}
+                    className="hover:text-apple-text dark:hover:text-white transition-colors"
+                  >
+                    {l.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
@@ -198,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigatePage, onReplayIntro })
         {/* Bottom Copyright & Back to Top */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-apple-gray">
           <div className="flex items-center gap-1">
-            <span>© {currentYear} {STORE_CONFIG.name}. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} {STORE_CONFIG.name}. All rights reserved.</span>
           </div>
 
           <div className="flex items-center gap-6">

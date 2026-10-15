@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import type { Product } from "../data/storeData";
 import { HERO_PRODUCTS } from "../data/storeData";
 import { Interactive3DViewer } from "../components/Interactive3DViewer";
 import { soundFx } from "../lib/utils";
-import { ArrowLeft, Box } from "lucide-react";
+import { ArrowLeft, Box, Sparkles } from "lucide-react";
 
 interface StudioPageProps {
   initialProduct?: Product;
@@ -18,7 +18,9 @@ export const StudioPage: React.FC<StudioPageProps> = ({
   onSelectProduct,
   onNavigateHome,
 }) => {
-  const currentProduct = initialProduct || HERO_PRODUCTS[0];
+  const [currentProduct, setCurrentProduct] = useState<Product>(
+    initialProduct || HERO_PRODUCTS[0]
+  );
 
   return (
     <div className="pt-28 pb-24 bg-white dark:bg-[#030304] text-apple-text dark:text-white transition-colors duration-300 animate-fade-in">
@@ -37,7 +39,7 @@ export const StudioPage: React.FC<StudioPageProps> = ({
           </button>
           <span className="text-xs text-apple-gray font-mono">/</span>
           <span className="text-xs font-mono text-[#0071e3] dark:text-brand-gold font-medium">
-            3D Interactive Hardware Studio
+            3D Product Studio
           </span>
         </div>
 
@@ -45,13 +47,13 @@ export const StudioPage: React.FC<StudioPageProps> = ({
         <div className="text-center max-w-3xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full apple-pill text-xs font-mono uppercase tracking-widest text-[#0071e3] dark:text-brand-gold mb-3 shadow-xs">
             <Box className="w-3.5 h-3.5 animate-spin-slow" />
-            Interactive Hardware Stage
+            Interactive Product Stage
           </div>
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-apple-text dark:text-white mb-4">
             Inspect in 3D Space.
           </h1>
           <p className="text-apple-gray text-sm sm:text-base leading-relaxed">
-            Drag to rotate 360°, inspect real aerospace materials, trigger internal acoustic chambers, and customize titanium finishes in real time.
+            Drag to rotate 360° and tap the hotspots to see what makes each featured product special.
           </p>
         </div>
 

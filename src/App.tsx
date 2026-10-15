@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Lenis from "lenis";
-import type { Product } from "./data/storeData";
-import { HERO_PRODUCTS } from "./data/storeData";
+import type { CategoryId, Product, Tier } from "./data/storeData";
+import { HERO_PRODUCTS, isCategoryId, isTier } from "./data/storeData";
 import { CustomCursor } from "./components/CustomCursor";
 import { CinematicIntro } from "./components/CinematicIntro";
 import { Navbar, type PageRoute } from "./components/Navbar";
@@ -21,29 +21,12 @@ import { WhyUsPage } from "./pages/WhyUsPage";
 import { ReviewsPage } from "./pages/ReviewsPage";
 import { ContactPage } from "./pages/ContactPage";
 
-const INTRO_SESSION_KEY = "sg_intro_seen";
-
-const hasSeenIntroThisSession = () => {
-  try {
-    return sessionStorage.getItem(INTRO_SESSION_KEY) === "1";
-  } catch {
-    return false;
-  }
-};
-
-const markIntroSeen = () => {
-  try {
-    sessionStorage.setItem(INTRO_SESSION_KEY, "1");
-  } catch {
-    // sessionStorage unavailable (private mode, etc) - safe to ignore
-  }
-};
-
 export const App: React.FC = () => {
-  const [showIntro, setShowIntro] = useState(() => !hasSeenIntroThisSession());
+  const [showIntro, setShowIntro] = useState(true);
   const [isDark, setIsDark] = useState(false); // Default to Apple White Theme
   const [currentPage, setCurrentPage] = useState<PageRoute>("home");
-  const [productCategoryFilter, setProductCategoryFilter] = useState<string | undefined>(undefined);
+  const [shopCategory, setShopCategory] = useState<CategoryId | "all">("all");
+  const [shopTier, setShopTier] = useState<Tier | "all">("all");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [studioProduct, setStudioProduct] = useState<Product>(HERO_PRODUCTS[0]);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -63,25 +46,32 @@ export const App: React.FC = () => {
     setIsDark((prev) => !prev);
   };
 
-  // URL Hash Routing Sync
+  // URL hash routing, e.g. #/products/phones/premium
+  // (shareable on WhatsApp: the link opens the right category and tier)
   useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace("#/", "").replace("#", "").trim();
-      const validPages: PageRoute[] = [
-        "home",
-        "store",
-        "products",
-        "studio",
-        "categories",
-        "why-us",
-        "reviews",
-        "contact",
-      ];
+    const validPages: PageRoute[] = [
+      "home",
+      "store",
+      "products",
+      "studio",
+      "categories",
+      "why-us",
+      "reviews",
+      "contact",
+    ];
 
-      if (validPages.includes(hash as PageRoute)) {
-        setCurrentPage(hash as PageRoute);
+    const handleHashChange = () => {
+      const parts = window.location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+      const page = (parts[0] ?? "") as PageRoute;
+
+      if (validPages.includes(page)) {
+        setCurrentPage(page);
+        if (page === "products") {
+          setShopCategory(isCategoryId(parts[1]) ? parts[1] : "all");
+          setShopTier(isTier(parts[2]) ? parts[2] : "all");
+        }
         window.scrollTo({ top: 0, behavior: "instant" });
-      } else if (!hash) {
+      } else if (parts.length === 0) {
         setCurrentPage("home");
       }
     };
@@ -116,15 +106,29 @@ export const App: React.FC = () => {
     };
   }, []);
 
-  const navigateToPage = (page: PageRoute, category?: string) => {
-    if (category) {
-      setProductCategoryFilter(category);
-    } else if (page !== "products") {
-      setProductCategoryFilter(undefined);
+  const shopHash = (c: CategoryId | "all", t: Tier | "all") =>
+    c === "all" && t === "all" ? "/products" : `/products/${c}${t !== "all" ? `/${t}` : ""}`;
+
+  const navigateToPage = (page: PageRoute, category?: string, tier?: string) => {
+    if (page === "products") {
+      const c = isCategoryId(category) ? category : "all";
+      const t = isTier(tier) ? tier : "all";
+      setShopCategory(c);
+      setShopTier(t);
+      setCurrentPage(page);
+      window.location.hash = shopHash(c, t);
+    } else {
+      setCurrentPage(page);
+      window.location.hash = `/${page === "home" ? "" : page}`;
     }
-    setCurrentPage(page);
-    window.location.hash = `/${page === "home" ? "" : page}`;
     window.scrollTo({ top: 0, behavior: "instant" });
+  };
+
+  // Filter changes inside the shop page: update state and the URL without jumping to the top.
+  const handleShopFilters = (c: CategoryId | "all", t: Tier | "all") => {
+    setShopCategory(c);
+    setShopTier(t);
+    window.history.replaceState(null, "", `#${shopHash(c, t)}`);
   };
 
   const handleAddToCart = (product: Product) => {
@@ -172,17 +176,13 @@ export const App: React.FC = () => {
 
       {/* Cinematic Store Intro Experience */}
       {showIntro && (
-        <CinematicIntro
-          onComplete={() => {
-            markIntroSeen();
-            setShowIntro(false);
-          }}
-        />
+        <CinematicIntro onComplete={() => setShowIntro(false)} />
       )}
 
       {/* Main Navbar with Multi-Page Navigation and Theme Toggle */}
       <Navbar
         currentPage={currentPage}
+        activeCategory={shopCategory}
         cartCount={totalCartCount}
         isDark={isDark}
         onToggleTheme={toggleTheme}
@@ -212,7 +212,9 @@ export const App: React.FC = () => {
 
         {currentPage === "products" && (
           <ProductsPage
-            initialCategory={productCategoryFilter}
+            category={shopCategory}
+            tier={shopTier}
+            onChangeFilters={handleShopFilters}
             onSelectProduct={(p) => setSelectedProduct(p)}
             onAddToCart={handleAddToCart}
             onOpen3D={handleOpen3D}
@@ -231,7 +233,7 @@ export const App: React.FC = () => {
 
         {currentPage === "categories" && (
           <CategoriesPage
-            onSelectCategory={(slug) => navigateToPage("products", slug)}
+            onSelectCategory={(slug, tier) => navigateToPage("products", slug, tier)}
             onNavigateHome={() => navigateToPage("home")}
           />
         )}

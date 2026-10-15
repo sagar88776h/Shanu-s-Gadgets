@@ -26,7 +26,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigateHome }) => {
           </button>
           <span className="text-xs text-apple-gray font-mono">/</span>
           <span className="text-xs font-mono text-[#0071e3] dark:text-brand-gold font-medium">
-            Contact & Express Repair Service
+            Contact
           </span>
         </div>
 
@@ -40,7 +40,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigateHome }) => {
             We’re Here To Help.
           </h1>
           <p className="text-apple-gray text-base sm:text-xl font-normal">
-            Whether you want to check gadget availability, get an instant quote for a 45-min screen repair, or custom laser skins, connect with our specialists.
+            Check stock, ask about a phone’s condition, find a cover for your model, or get a quote for a repair. Message us or visit the store.
           </p>
         </div>
 

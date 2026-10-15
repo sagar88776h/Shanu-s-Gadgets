@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img">
+<defs>
+<filter id="sh" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="12"/></filter>
+<linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="gl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="pb" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b2d33"/><stop offset="1" stop-color="#0f1014"/></linearGradient><linearGradient id="pr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5e7eb"/><stop offset="1" stop-color="#8b93a1"/></linearGradient>
+</defs>
+
+<ellipse cx="280" cy="556" rx="170" ry="14" fill="#000" opacity="0.24" filter="url(#sh)"/>
+<g transform="rotate(-7 280 300)">
+  <rect x="170" y="110" width="220" height="380" rx="34" fill="url(#pb)" stroke="#000" stroke-opacity=".25"/>
+  <rect x="170" y="110" width="220" height="380" rx="34" fill="url(#gl)" opacity=".7"/>
+  <rect x="198" y="150" width="164" height="58" rx="12" fill="#06070a"/><rect x="210" y="168" width="100.8" height="10" rx="5" fill="#c9a24d"/><rect x="210" y="186" width="56" height="6" rx="3" fill="#c9a24d" opacity=".55"/>
+  <rect x="236" y="104" width="30" height="12" rx="4" fill="url(#pr)"/>
+  <rect x="294" y="104" width="30" height="12" rx="4" fill="url(#pr)"/>
+  <rect x="198" y="420" width="164" height="4" rx="2" fill="#c9a24d" opacity=".9"/>
+  <rect x="198" y="442" width="100" height="8" rx="4" fill="#fff" opacity=".25"/>
+</g>
+<g transform="rotate(8 460 480)">
+  <rect x="400" y="430" width="120" height="80" rx="20" fill="url(#pb)" opacity=".0"/>
+</g>
+</svg>

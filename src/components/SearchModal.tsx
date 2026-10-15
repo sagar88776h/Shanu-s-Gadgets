@@ -21,24 +21,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
-      document.body.style.overflow = "hidden";
     } else {
       setQuery("");
-      document.body.style.overflow = "";
     }
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -48,18 +34,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           p.name.toLowerCase().includes(query.toLowerCase()) ||
           p.tagline.toLowerCase().includes(query.toLowerCase()) ||
           p.categoryLabel.toLowerCase().includes(query.toLowerCase()) ||
+          p.tier.replace("-", " ").includes(query.toLowerCase().replace("-", " ")) ||
           p.description.toLowerCase().includes(query.toLowerCase())
       )
     : ALL_PRODUCTS.slice(0, 4);
 
-  const quickTags = [
-    "Titanium",
-    "Headphones",
-    "Smart Watch",
-    "Screen Repair",
-    "MagSafe",
-    "Mechanical",
-  ];
+  const quickTags = ["iPhone", "AirPods", "Neckband", "Cover", "Charger", "Power bank"];
 
   return (
     <div
@@ -119,12 +99,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         {/* Results List */}
         <div className="max-h-80 overflow-y-auto space-y-2 pt-2 no-scrollbar">
           <div className="text-[10px] font-mono uppercase tracking-wider text-apple-gray mb-2">
-            {query.trim() ? `RESULTS (${results.length})` : "FEATURED GADGETS"}
+            {query.trim() ? `RESULTS (${results.length})` : "FEATURED PRODUCTS"}
           </div>
 
           {results.length === 0 ? (
             <div className="py-8 text-center text-xs text-apple-gray font-normal">
-              No matching gadgets found. Try searching for “Headphones”, “Titanium”, or “Repair”.
+              No matching products found. Try “iPhone”, “AirPods” or “Cover”.
             </div>
           ) : (
             results.map((product) => (

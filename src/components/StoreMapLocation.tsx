@@ -75,7 +75,7 @@ export const StoreMapLocation: React.FC = () => {
               </div>
 
               <p className="text-sm sm:text-base text-apple-gray font-normal leading-relaxed floating-font-delayed">
-                Easily accessible along Madhupur Main Road with dedicated customer parking, express tech pickup bays, and instant product unboxing assistance.
+                Easy to find on Madhupur Main Road. Walk in to compare phones, try earbuds and neckbands, and collect WhatsApp orders from the counter.
               </p>
 
               <div className="space-y-3 pt-2">
@@ -84,7 +84,7 @@ export const StoreMapLocation: React.FC = () => {
                     <MapPin className="w-4 h-4" />
                   </div>
                   <div>
-                    <h5 className="text-sm font-bold text-apple-text dark:text-white">Flagship Address</h5>
+                    <h5 className="text-sm font-bold text-apple-text dark:text-white">Store address</h5>
                     <p className="text-xs text-apple-gray">
                       {STORE_CONFIG.address} (Kamalasagar Market Corridor)
                     </p>

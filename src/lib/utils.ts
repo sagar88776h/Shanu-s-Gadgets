@@ -1,5 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { Product } from "../data/storeData";
+import { STORE_CONFIG, TIERS } from "../data/storeData";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,14 +15,32 @@ export function formatPrice(amount: number): string {
   }).format(amount);
 }
 
-// Generate pre-filled WhatsApp link
+// Generate pre-filled WhatsApp link (always uses the number in STORE_CONFIG)
 export function getWhatsAppOrderUrl(productName: string, price?: number): string {
-  const phone = "917005388381";
   const priceText = price ? ` (Listed at ${formatPrice(price)})` : "";
   const text = encodeURIComponent(
     `Hello Shanu’s Gadgets,\nI am interested in:\n• ${productName}${priceText}\n\nPlease share current availability and store pickup details.`
   );
-  return `https://wa.me/${phone}?text=${text}`;
+  return `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${text}`;
+}
+
+// Richer message for a product: includes tier and, for used phones, the condition.
+// Covers and screen guards ask for the phone model because they are model specific.
+export function getProductWhatsAppUrl(product: Product): string {
+  const tier = TIERS.find((t) => t.id === product.tier)?.label ?? product.tier;
+  const lines = [
+    "Hello Shanu’s Gadgets,",
+    "I am interested in:",
+    `• ${product.name} (${product.categoryLabel} · ${tier}) — ${formatPrice(product.price)}`,
+  ];
+  if (product.condition) {
+    lines.push(`• ${product.condition.grade}, battery ${product.condition.battery}%, ${product.condition.storage}`);
+  }
+  if (product.category === "covers" || product.specs.some((sp) => /select your model/i.test(sp.value))) {
+    lines.push("", "My phone model: ");
+  }
+  lines.push("", "Is it available for store pickup?");
+  return `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
 }
 
 // Subtle Apple-style Web Audio Synthesizer (Zero External Audio File Latency)

@@ -37,7 +37,7 @@ export const StorePage: React.FC<StorePageProps> = ({
       image: STORE_CONFIG.images.exterior,
       description:
         "Our prominent retail storefront featuring the high-visibility illuminated 'SS Shanu's Gadgets' signboard, full glass entrance, and welcoming evening lighting.",
-      tag: "FLAGSHIP STOREFRONT",
+      tag: "OUR STORE",
     },
     {
       id: "interior",
@@ -45,7 +45,7 @@ export const StorePage: React.FC<StorePageProps> = ({
       subtitle: "Geometric LED Ceiling & Gold Marble Showcase",
       image: STORE_CONFIG.images.interior,
       description:
-        "Step inside our climate-controlled boutique with warm display walls, illuminated counter accents, and hands-on testing stations for all flagships.",
+        "Step inside our climate-controlled boutique with warm display walls, illuminated counter accents, and hands-on stations where you can check phones, earbuds and accessories.",
       tag: "REAL SHOWROOM",
     },
     {
@@ -54,17 +54,17 @@ export const StorePage: React.FC<StorePageProps> = ({
       subtitle: "Precision Shelving & Audio Bays",
       image: STORE_CONFIG.images.shelves,
       description:
-        "Every case, cable, GaN charger, and headphone is neatly organized with live demo units so you can test fit and sound quality before buying.",
+        "Every cover, cable, charger, earbud and neckband is neatly organized, so you can check the fit and the sound before you buy.",
       tag: "ACCESSORY GALLERY",
     },
     {
       id: "lifestyle",
-      title: "Specialist Advice & Repair Lab",
-      subtitle: "One-on-One Technical Consultation",
+      title: "Advice & Service Counter",
+      subtitle: "Honest advice, one on one",
       image: STORE_CONFIG.images.lifestyle,
       description:
-        "Get transparent advice from knowledgeable tech lovers. Watch your phone get repaired or wrapped in custom 3D skins right before your eyes.",
-      tag: "EXPERT SERVICE",
+        "Get honest advice on which phone and tier suit your budget. Ask about repairs and custom skins at the counter.",
+      tag: "SERVICE COUNTER",
     },
   ];
 
@@ -113,7 +113,7 @@ export const StorePage: React.FC<StorePageProps> = ({
             </h1>
           </div>
           <p className="text-apple-gray text-base sm:text-xl font-normal floating-font-delayed">
-            We believe technology should be experienced in person. Touch the titanium, hear the acoustics, and get genuine advice right here in Madhupur, Kamalasagar.
+            Hold the phone, try the earbuds and get honest advice right here in Madhupur, Kamalasagar.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export const StorePage: React.FC<StorePageProps> = ({
                   <button
                     key={v.id}
                     onClick={() => handleTabChange(idx)}
-                    className={`relative px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
+                    className={`relative isolate px-4 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap transition-all duration-300 flex items-center gap-2 ${
                       isActive
                         ? "text-white dark:text-dark-950 shadow-md scale-100"
                         : "text-apple-text/70 dark:text-apple-gray hover:text-apple-text dark:hover:text-white"
@@ -203,19 +203,19 @@ export const StorePage: React.FC<StorePageProps> = ({
               <div className="space-y-2.5 pt-2 border-t border-black/[0.06] dark:border-white/[0.08]">
                 <div className="flex items-center gap-2.5 text-xs text-apple-text/80 dark:text-apple-lightgray">
                   <CheckCircle2 className="w-4 h-4 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-                  <span>Hands-on Live Product Demo Tables</span>
+                  <span>Hands-on tables to check phones and accessories</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-apple-text/80 dark:text-apple-lightgray">
                   <CheckCircle2 className="w-4 h-4 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-                  <span>Certified Express Repair Counter (45-Min)</span>
+                  <span>Repair and service counter</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-apple-text/80 dark:text-apple-lightgray">
                   <CheckCircle2 className="w-4 h-4 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-                  <span>Laser-Cut 3M Device Skins & Screen Armor</span>
+                  <span>Custom skins and screen guards</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-apple-text/80 dark:text-apple-lightgray">
                   <CheckCircle2 className="w-4 h-4 text-[#0071e3] dark:text-brand-gold flex-shrink-0" />
-                  <span>Official Warranty & Instant Billing</span>
+                  <span>Store warranty and invoice on every phone</span>
                 </div>
               </div>
 
@@ -246,10 +246,10 @@ export const StorePage: React.FC<StorePageProps> = ({
               <ShieldCheck className="w-6 h-6" />
             </div>
             <h4 className="text-xl font-bold text-apple-text dark:text-white">
-              100% Brand Certified
+              Checked before listing
             </h4>
             <p className="text-xs sm:text-sm text-apple-gray leading-relaxed">
-              Every device is sealed with verified official barcodes, authentic warranty stamps, and genuine accessories.
+              Every pre-owned phone is tested for display, touch, cameras, speakers, network and charging before it goes on the shelf.
             </p>
           </div>
 
@@ -258,10 +258,10 @@ export const StorePage: React.FC<StorePageProps> = ({
               <Wrench className="w-6 h-6" />
             </div>
             <h4 className="text-xl font-bold text-apple-text dark:text-white">
-              45-Minute Repair Desk
+              Repairs at the counter
             </h4>
             <p className="text-xs sm:text-sm text-apple-gray leading-relaxed">
-              Chip-level screen replacements, battery refreshing, and camera module servicing with full warranty.
+              Screen and battery repairs are available. Ask at the counter for a quote.
             </p>
           </div>
 
@@ -270,10 +270,10 @@ export const StorePage: React.FC<StorePageProps> = ({
               <Layers className="w-6 h-6" />
             </div>
             <h4 className="text-xl font-bold text-apple-text dark:text-white">
-              Custom Laser 3M Wraps
+              Custom skins
             </h4>
             <p className="text-xs sm:text-sm text-apple-gray leading-relaxed">
-              Precision 0.05mm skin application on smartphones, laptops, and consoles in under 10 minutes at the counter.
+              Precision-cut skins for phones, laptops and consoles, applied at the counter.
             </p>
           </div>
         </div>

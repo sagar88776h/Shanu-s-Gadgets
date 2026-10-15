@@ -8,7 +8,7 @@ import {
   Headphones,
   MapPin,
   CheckCircle2,
-  XCircle,
+  Phone,
   MessageCircle,
 } from "lucide-react";
 
@@ -67,7 +67,7 @@ export const WhyUsPage: React.FC<WhyUsPageProps> = ({
             Built On Trust & Precision.
           </h1>
           <p className="text-apple-gray text-base sm:text-xl font-normal leading-relaxed">
-            We don’t just sell electronics. We curate genuine technology, support your everyday workflow, and provide lightning-fast local service.
+            We don’t just sell phones and accessories. We check every phone, tell you its true condition, and stay available after you buy.
           </p>
         </div>
 
@@ -124,53 +124,51 @@ export const WhyUsPage: React.FC<WhyUsPageProps> = ({
         {/* Comparison Table */}
         <div className="rounded-3xl apple-card dark:glass-card border border-black/[0.06] dark:border-white/10 p-6 sm:p-10 mb-16 shadow-xl">
           <h3 className="text-2xl font-bold text-apple-text dark:text-white text-center mb-8">
-            How Shanu’s Gadgets Compares
+            Buying a used phone: how we compare
           </h3>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead>
-                <tr className="border-b border-black/[0.08] dark:border-white/10 text-apple-gray font-mono uppercase tracking-wider">
-                  <th className="py-4 px-4">Experience Aspect</th>
+                <tr className="border-b border-black/[0.08] dark:border-white/10 text-apple-gray">
+                  <th className="py-4 px-4">What you get</th>
                   <th className="py-4 px-4 text-[#0071e3] dark:text-brand-gold font-bold">Shanu’s Gadgets</th>
-                  <th className="py-4 px-4 text-apple-gray">Generic Online Portals</th>
-                  <th className="py-4 px-4 text-apple-gray">Local Uncertified Shops</th>
+                  <th className="py-4 px-4 text-apple-gray">Online marketplace</th>
+                  <th className="py-4 px-4 text-apple-gray">Private seller</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-black/[0.06] dark:divide-white/[0.06]">
                 <tr>
-                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Hands-on Touch & Feel</td>
+                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">See the phone first</td>
                   <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> Live Demo Showcase
+                    <CheckCircle2 className="w-4 h-4" /> Hold and test it in the store
                   </td>
-                  <td className="py-4 px-4 text-apple-gray flex items-center gap-1.5">
-                    <XCircle className="w-4 h-4 text-red-400" /> Only Photos
-                  </td>
-                  <td className="py-4 px-4 text-apple-gray">Limited Boxes</td>
+                  <td className="py-4 px-4 text-apple-gray">Photos only</td>
+                  <td className="py-4 px-4 text-apple-gray">Depends on the seller</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Brand Warranty & Invoicing</td>
+                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Condition details</td>
                   <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> 100% Genuine Barcoded
+                    <CheckCircle2 className="w-4 h-4" /> Grade and battery health shown
                   </td>
-                  <td className="py-4 px-4 text-apple-gray">Varies by 3rd-Party Seller</td>
-                  <td className="py-4 px-4 text-apple-gray">Often Missing Stamp</td>
+                  <td className="py-4 px-4 text-apple-gray">Varies by seller</td>
+                  <td className="py-4 px-4 text-apple-gray">Not guaranteed</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">On-The-Spot Express Repair</td>
+                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Warranty and invoice</td>
                   <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> 45 Minutes In-Store
+                    <CheckCircle2 className="w-4 h-4" /> Store warranty and invoice
                   </td>
-                  <td className="py-4 px-4 text-apple-gray">7 to 15 Days Courier</td>
-                  <td className="py-4 px-4 text-apple-gray">Sent Out of Town</td>
+                  <td className="py-4 px-4 text-apple-gray">Varies by seller</td>
+                  <td className="py-4 px-4 text-apple-gray">Not guaranteed</td>
                 </tr>
                 <tr>
-                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Data Transfer & Free Setup</td>
+                  <td className="py-4 px-4 font-semibold text-apple-text dark:text-white">Help after you buy</td>
                   <td className="py-4 px-4 text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4" /> Lifetime In-Store Support
+                    <CheckCircle2 className="w-4 h-4" /> Come back to the store
                   </td>
-                  <td className="py-4 px-4 text-apple-gray">Self-Service / None</td>
-                  <td className="py-4 px-4 text-apple-gray">Additional Charges</td>
+                  <td className="py-4 px-4 text-apple-gray">Return or courier process</td>
+                  <td className="py-4 px-4 text-apple-gray">Not guaranteed</td>
                 </tr>
               </tbody>
             </table>

@@ -43,7 +43,7 @@ export const WhyShanusGadgets: React.FC = () => {
             </h2>
           </div>
           <p className="text-apple-gray text-base sm:text-xl font-normal floating-font-delayed">
-            We bridge the gap between world-class technology and genuine, personalized neighborhood care.
+            Good phones, fair prices and local help you can walk in and ask for.
           </p>
         </div>
 

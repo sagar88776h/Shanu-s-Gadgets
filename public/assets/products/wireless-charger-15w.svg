@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img">
+<defs>
+<filter id="sh" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="12"/></filter>
+<linearGradient id="gl" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".45"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="gl2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="wp" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fcfcfe"/><stop offset="1" stop-color="#c9cfda"/></linearGradient><linearGradient id="pr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e5e7eb"/><stop offset="1" stop-color="#8b93a1"/></linearGradient>
+</defs>
+
+<ellipse cx="300" cy="548" rx="190" ry="18" fill="#000" opacity="0.24" filter="url(#sh)"/>
+<ellipse cx="300" cy="420" rx="190" ry="60" fill="#000" opacity=".16"/>
+<ellipse cx="300" cy="400" rx="190" ry="62" fill="url(#wp)" stroke="#000" stroke-opacity=".25" stroke-width="2"/>
+<ellipse cx="300" cy="392" rx="190" ry="60" fill="url(#wp)"/>
+<ellipse cx="300" cy="392" rx="190" ry="60" fill="url(#gl)" opacity=".8"/>
+<ellipse cx="300" cy="392" rx="120" ry="38" fill="none" stroke="#c9a24d" stroke-width="5"/>
+<ellipse cx="300" cy="392" rx="96" ry="30" fill="none" stroke="#000" stroke-opacity=".12" stroke-width="2"/>
+<path d="M486 410 C 540 440, 540 500, 560 540" fill="none" stroke="#e5e7eb" stroke-width="10" stroke-linecap="round"/>
+<g transform="rotate(-8 300 200)">
+  <rect x="215" y="70" width="170" height="300" rx="30" fill="#14161b" opacity=".92"/>
+  <rect x="222" y="77" width="156" height="286" rx="24" fill="#c9a24d" opacity=".0"/>
+  <circle cx="300" cy="270" r="40" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/>
+  <rect x="255" y="100" width="90" height="10" rx="5" fill="#fff" opacity=".5"/>
+  <rect x="215" y="70" width="170" height="300" rx="30" fill="url(#gl2)" opacity=".45"/>
+</g>
+</svg>
